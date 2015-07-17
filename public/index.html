@@ -133,7 +133,7 @@
                   var tracks = [];
                   var trackLinks = [];
                   var currentTrack, status, output;
-                  socket = io.connect('http://ec2-52-2-146-207.compute-1.amazonaws.com');
+                  socket = io.connect('https://spotify-dl.herokuapp.com');
 
                   function matchLinks(link, title){
                     trackLinks.push({"link": link, "title": title, "id": link.match('=(.*)')[1]});
