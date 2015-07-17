@@ -9,7 +9,7 @@ var spawn = require('child_process').spawn;
 
 var client_id = '4fe8ca77111f4d3a94759239c0d60507';
 var client_secret = 'e93c0bbdb98845e39e83616eba7be98a';
-var redirect_uri = 'http://localhost:8888/callback';
+var redirect_uri = 'http://ec2-52-2-146-207.compute-1.amazonaws.com:8888/callback';
 
 var generateRandomString = function(length) {
   var text = '';
