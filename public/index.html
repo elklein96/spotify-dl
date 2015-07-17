@@ -1,0 +1,251 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Download Spotify Playlist</title>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+    <style type="text/css">
+      #login, #loggedin {
+        display: none;
+      }
+      .skip{
+        float: right;
+        margin-left: 5%;
+      }
+      #cancel-download{
+        float: left;
+        margin-right: 5%;
+      }
+      .hidden{
+        display: none;
+      }
+      .text-overflow {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        width: 500px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <div id="login">
+        <h1>Please log in to continue</h1>
+        <a href="/login" class="btn btn-primary">Log in with Spotify</a>
+      </div>
+      <div id="loggedin">
+        <div id="playlist">
+        </div>
+        <div id="download">
+        </div>
+
+      </div>
+    </div>
+
+    <script id="playlist-template" type="text/x-handlebars-template">
+      <h1>Hello, {{userProfile.display_name}}</h1>
+      <div class="media">
+        <div class="pull-left">
+          <img class="media-object" width="150" src="{{userProfile.images.0.url}}" />
+        </div>
+        <div class="media-body">
+          <h2>Choose Your Playlist</h2>
+          <dl class="dl-horizontal">
+            <dt>Playlist URL</dt><dd class="text-overflow"><input type="text" placeholder="Playlist" class="form-control" id="playlist-link"></dd>
+            <dd class="text-overflow"><p id="error" class="text-danger hidden">Enter a valid Spotify playlist</p></dd>
+            {{#each playlists}}
+              <dd class="text-overflow"><a href="{{this.link}}">{{this.name}}</a></dd>
+            {{/each}}
+            <br>
+            <dd><button class="btn btn-default" id="get-playlist">Download</button> <button class="btn btn-danger hidden" id="cancel-download">Cancel</button><p id="downloading" class="hidden"><i class="fa fa-cog fa-2x fa-spin"></i> Downloading...</p></dd>
+          </dl>
+        </div>
+      </div>
+    </script>
+
+    <script id="download-template" type="text/x-handlebars-template">
+      <dl class="dl-horizontal">
+        {{#each trackLinks}}
+          <dt>Link: </dt><dd class="text-overflow"><a href="{{this.link}}">{{this.title}}</a></dd> <button class="btn btn-danger hidden skip" id="skip{{this.id}}">Skip</button>
+          <div class="progress">
+            <div class="progress-bar" id="{{this.id}}" role="progressbar" aria-valuenow="0"aria-valuemin="0" aria-valuemax="100" style="width:0%">
+              0%
+            </div>
+          </div>
+        {{/each}}
+      </dl>
+    </script>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0-alpha.1/handlebars.min.js"></script>
+    <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+    <script src="/javascripts/youtube-auth.js"></script>
+    <script src="/javascripts/socket.io-stream.js"></script>
+    <script src="//apis.google.com/js/client.js?onload=googleApiClientReady"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.5/socket.io.min.js"></script> 
+    <script>
+      (function() {
+        var socket, userProfile;
+
+        function getHashParams() {
+          var hashParams = {};
+          var e, r = /([^&;=]+)=?([^&;]*)/g,
+              q = window.location.hash.substring(1);
+          while ( e = r.exec(q)) {
+             hashParams[e[1]] = decodeURIComponent(e[2]);
+          }
+          return hashParams;
+        }
+
+        var playlistSource = document.getElementById('playlist-template').innerHTML,
+            playlistTemplate = Handlebars.compile(playlistSource),
+            playlistPlaceholder = document.getElementById('playlist');
+
+        var downloadSource = document.getElementById('download-template').innerHTML,
+            downloadTemplate = Handlebars.compile(downloadSource),
+            downloadPlaceholder = document.getElementById('download');
+
+        var params = getHashParams();
+
+        var access_token = params.access_token,
+            refresh_token = params.refresh_token,
+            error = params.error;
+
+        if (error) {
+          alert('There was an error during the authentication');
+        } else {
+          if (access_token) {
+            $.ajax({
+              url: 'https://api.spotify.com/v1/me',
+              headers: {
+                'Authorization': 'Bearer ' + access_token
+              },
+              success: function(response) {
+                userProfile = response;
+
+                playlistPlaceholder.innerHTML = playlistTemplate({
+                  access_token: access_token,
+                  refresh_token: refresh_token,
+                  userProfile: userProfile
+                });
+
+                document.getElementById('get-playlist').addEventListener('click', function() {
+                  var tracks = [];
+                  var trackLinks = [];
+                  var currentTrack, status, output;
+                  socket = io.connect('http://localhost:8888');
+
+                  function matchLinks(link, title){
+                    trackLinks.push({"link": link, "title": title, "id": link.match('=(.*)')[1]});
+
+                    if(trackLinks.length === tracks.length){
+                      $.ajax({
+                        url: '/tracks', 
+                        data: {
+                          'tracks': trackLinks
+                        }
+                      });
+
+                      socket.on('progress', function (data) {
+                        currentTrack = data.track;
+                        status = data.status[1];
+
+                        console.log("track: "+currentTrack+". status: "+status);
+
+                        $('#'+currentTrack).attr('aria-valuenow', status);
+                        $('#'+currentTrack).text(status);
+                        $('#'+currentTrack).css('width', status);
+                        $('#skip'+currentTrack).removeClass('hidden');
+
+                        $('#skip'+currentTrack).unbind().click(function() {
+                          console.log("skip");
+                          socket.emit('skip', { data: 'skip' });
+                        });
+                      });
+
+                      socket.on('output', function (data) {
+                        output = data.file;
+                      });
+
+                      socket.on('download', function (data) {
+                        var a = $("<a>").attr("href", output.replace('./public', '')).attr("download", output.replace(/^.*[\\\/]/, '')).appendTo("body");
+                        a[0].click();
+                      });
+
+                      downloadPlaceholder.innerHTML = downloadTemplate({
+                        tracks: tracks,
+                        trackLinks: trackLinks
+                      });
+                    }
+                  }
+
+                  if(document.getElementById('playlist-link').value.indexOf('play.spotify.com/user') > -1){
+                    $('#get-playlist').addClass('hidden');
+                    $('#downloading').removeClass('hidden');
+                    $('#cancel-download').removeClass('hidden');
+                    $('#error').hide();
+
+                    $.ajax({
+                      url: '/refresh_token',
+                      data: {
+                        'access_token': access_token,
+                        'refresh_token': refresh_token
+                      }
+                    }).done(function(data) {
+                      access_token = data.access_token;
+                      $.ajax({
+                        url: '/playlist-tracks',
+                        data: {
+                          'access_token': access_token,
+                          'user_id': userProfile.id,
+                          'playlist_url': document.getElementById('playlist-link').value
+                        }
+                      }).done(function(data) {
+                        for(var i=0; i<data.playlist_info.items.length; i++){
+                          tracks[i] = { "name": data.playlist_info.items[i].track.name, "artist": data.playlist_info.items[i].track.artists[0].name};
+                        }
+
+                        for(var i=0; i<tracks.length; i++){
+                          var request = gapi.client.youtube.search.list({
+                            q: tracks[i].name+" "+tracks[i].artist,
+                            maxResults: 10,
+                            part: 'snippet'
+                          });
+                          request.execute(function(response) {
+                            matchLinks("https://www.youtube.com/watch?v="+response.result.items[0].id.videoId, response.result.items[0].snippet.title);
+                          });
+                        }
+                      });
+                    });
+                  }else{
+                    $('#error').removeClass('hidden');
+                  }
+                }, false);
+
+                document.getElementById('cancel-download').addEventListener('click', function() {
+                  socket.emit('terminate', { data: 'terminate' });
+                  socket.disconnect();
+                  $('#get-playlist').removeClass('hidden');
+                  $('#downloading').addClass('hidden');
+                  $('#cancel-download').addClass('hidden');
+                }, false);
+
+                window.onbeforeunload = function(event){
+                  var conf = confirm("Exiting this window will terminate the download.");
+                  if(conf == true){
+                    socket.emit('terminate', { data: 'terminate' });
+                    socket.disconnect();
+                  } 
+                }
+                $('#login').hide();
+                $('#loggedin').show();
+              }
+            });
+          } else {
+              $('#login').show();
+              $('#loggedin').hide();
+          }
+        }
+      })();
+    </script>
+</html>
