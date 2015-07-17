@@ -29,8 +29,9 @@ var server = http.createServer(app);
 app.use(express.static(__dirname + '/public'))
    .use(cookieParser());
 
-console.log('Listening on 8888');
-server.listen(8888);
+server.listen(process.env.PORT || 8888, function(){
+  console.log("Express server listening on port %d", this.address().port);
+});
 
 app.get('/login', function(req, res) {
   var state = generateRandomString(16);
