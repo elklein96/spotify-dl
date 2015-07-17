@@ -30,8 +30,6 @@ app.use(express.static(__dirname + '/public'))
    .use(cookieParser());
 
 console.log('Listening on 8888');
-server.listen(80);
-server.listen(443);
 server.listen(8888);
 
 app.get('/login', function(req, res) {
