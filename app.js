@@ -26,11 +26,8 @@ var stateKey = 'spotify_auth_state';
 var app = express();
 var server = http.createServer(app);
 
-app.configure(function(){
-  app.set('port', process.env.PORT || 8888);
-  app.use(express.static(__dirname + '/public'))
-     .use(cookieParser());
-}
+app.use(express.static(__dirname + '/public'))
+   .use(cookieParser());
 
 console.log('Listening on 8888');
 server.listen(8888);
