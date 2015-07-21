@@ -9,7 +9,7 @@ var spawn = require('child_process').spawn;
 
 var client_id = '4fe8ca77111f4d3a94759239c0d60507';
 var client_secret = 'e93c0bbdb98845e39e83616eba7be98a';
-var redirect_uri = 'https://spotify-dl.herokuapp.com/callback';
+var redirect_uri = 'http://localhost:8888/callback';
 
 var generateRandomString = function(length) {
   var text = '';
@@ -94,6 +94,8 @@ app.get('/callback', function(req, res) {
             access_token: access_token,
             refresh_token: refresh_token
           }));
+
+        res.send({'access_token': access_token});
       } else {
         res.redirect('/#' +
           querystring.stringify({

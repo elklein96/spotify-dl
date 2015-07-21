@@ -133,7 +133,7 @@
                   var tracks = [];
                   var trackLinks = [];
                   var currentTrack, status, output;
-                  socket = io.connect('https://spotify-dl.herokuapp.com');
+                  socket = io.connect('http://localhost:8888');
 
                   function matchLinks(link, title){
                     trackLinks.push({"link": link, "title": title, "id": link.match('=(.*)')[1]});
@@ -149,8 +149,6 @@
                       socket.on('progress', function (data) {
                         currentTrack = data.track;
                         status = data.status[1];
-
-                        console.log("track: "+currentTrack+". status: "+status);
 
                         $('#'+currentTrack).attr('aria-valuenow', status);
                         $('#'+currentTrack).text(status);
