@@ -12,6 +12,4 @@ child.stdout.on('data', function(data) {
   console.log(data.toString());
 });
 
-var rmCache = crontab.scheduleJob("* */1 * * *", function(){
-  spawn('find', ['./public/downloads', '-type', 'f', '-mtime', '+1', '-exec', 'rm', '-f', '{}', '\\;']);
-});
+spawn('find', ['./public/downloads', '-type', 'f', '-mmin', '+59', '-exec', 'rm', '-f', '{}', '\\;']);

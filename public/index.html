@@ -58,7 +58,7 @@
               <dd class="text-overflow"><a href="{{this.link}}">{{this.name}}</a></dd>
             {{/each}}
             <br>
-            <dd><button class="btn btn-default" id="get-playlist">Download</button> <button class="btn btn-danger hidden" id="cancel-download">Cancel</button><p id="downloading" class="hidden"><i class="fa fa-cog fa-2x fa-spin"></i> Downloading...</p></dd>
+            <dd><button class="btn btn-default" id="get-playlist" disabled>Download</button> <button class="btn btn-danger hidden" id="cancel-download">Cancel</button><p id="downloading" class="hidden"><i class="fa fa-cog fa-2x fa-spin"></i> Downloading...</p></dd>
           </dl>
         </div>
       </div>
@@ -170,6 +170,10 @@
                         a[0].click();
                       });
 
+                      socket.on('success', function (data) {
+                        $('#downloading').addClass('hidden');
+                      });
+
                       downloadPlaceholder.innerHTML = downloadTemplate({
                         tracks: tracks,
                         trackLinks: trackLinks
@@ -177,7 +181,7 @@
                     }
                   }
 
-                  if(document.getElementById('playlist-link').value.indexOf('play.spotify.com/user') > -1){
+                  if(/[\w-]+.spotify.com\/user\/\d+\/playlist\/[\w-]+/.test(document.getElementById('playlist-link').value)){
                     $('#get-playlist').addClass('hidden');
                     $('#downloading').removeClass('hidden');
                     $('#cancel-download').removeClass('hidden');

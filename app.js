@@ -180,7 +180,7 @@ app.get('/tracks', function(req, res) {
   function downloadExec(i, socket){
     console.log("Downloading "+tracks[i].link+" at "+i);
 
-    var child  = spawn("youtube-dl", ["--extract-audio", "--audio-format", "mp3", "-o", './public/downloads/%(title)s.%(ext)s', "--restrict-filenames", tracks[i].link]);
+    var child  = spawn("youtube-dl", ["--extract-audio", "-o", './public/downloads/%(title)s.%(ext)s', "--restrict-filenames", tracks[i].link]);
 
     socket.on('terminate', function (data){
       console.log('terminate');
@@ -204,7 +204,7 @@ app.get('/tracks', function(req, res) {
       }
       if(data.toString().indexOf('[download] Destination') > -1){
         socket.emit('output', {
-          file: data.toString().match('(?:Destination: )(.*)\n')[1].replace('m4a', 'mp3')
+          file: data.toString().match('(?:Destination: )(.*)\n')[1]
         });
       }
     });
@@ -215,8 +215,14 @@ app.get('/tracks', function(req, res) {
           data: {download: "download"}
         });
       }
-      if(++i<tracks.length)
+      if(++i<tracks.length){
         downloadExec(i, socket);
+      }
+      if(i === tracks.length && !kill){
+        socket.emit('success', {
+          data: {download: "success"}
+        });
+      }
     });
   }
   io.sockets.on('connection', function (socket) {

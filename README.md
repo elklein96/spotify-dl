@@ -20,7 +20,7 @@ spotify-dl utilizes YouTube for all media. After receiving playlist information 
   * If you're using a Unix machine, you're in luck! Simply execute `$ sh install-unix.sh` to install all dependencies for spotify-dl.
   * For a Windows machine:
     1. [Install Node.js and NPM](https://nodejs.org/download/)
-    2. [Install youtube-dl](https://rg3.github.io/youtube-dl/download.html)
+    2. [Install youtube-dl](https://rg3.github.io/youtube-dl/download.html) and add it to your PATH variable.
 	
 3. Start it up.
   * Execute `$ node init.js` in a command prompt.

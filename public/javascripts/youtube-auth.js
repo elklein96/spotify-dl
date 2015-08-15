@@ -2,6 +2,7 @@ var OAUTH2_CLIENT_ID = '180259427148-bc2c3r2eq3bmrjvn02v1arvvhn4uuend.apps.googl
 var OAUTH2_SCOPES = [
   'https://www.googleapis.com/auth/youtube'
 ];
+var isSignedIn;
 
 googleApiClientReady = function() {
   gapi.auth.init(function() {
@@ -31,5 +32,15 @@ function handleAuthResult(authResult) {
 
 function loadAPIClientInterfaces() {
   gapi.client.load('youtube', 'v3', function() {
+  });
+  isSignedIn = true;
+  $('#google-warning').remove();
+  $('#get-playlist').removeAttr("disabled");
+}
+
+if(!isSignedIn){
+  $('#playlist').after('<div id="google-warning"><p class="text-warning">You are not signed in to Google.</p><button class="btn btn-primary" id="login-google">Login</button></div>');
+  $('#login-google').click(function(){
+    location.reload();
   });
 }
