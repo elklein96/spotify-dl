@@ -181,7 +181,7 @@
                     }
                   }
 
-                  if(/[\w-]+.spotify.com\/user\/\d+\/playlist\/[\w-]+/.test(document.getElementById('playlist-link').value)){
+                  if(/[\w-]+.spotify.com\/user\/\w+\/playlist\/[\w-]+/.test(document.getElementById('playlist-link').value)){
                     $('#get-playlist').addClass('hidden');
                     $('#downloading').removeClass('hidden');
                     $('#cancel-download').removeClass('hidden');
