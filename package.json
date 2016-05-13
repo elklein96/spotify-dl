@@ -2,7 +2,7 @@
   "author": "Evan Klein",
   "name": "spotify-dl",
   "description": "Download a Spotify playlist.",
-  "version": "0.0.1",
+  "version": "0.1.1",
   "license": "Apache-2.0",
   "main": "app.js",
   "repository": { 
