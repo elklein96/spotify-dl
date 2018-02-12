@@ -1,0 +1,14 @@
+<div class="row">
+  <div class="col-md-3">
+    <img class="user-profile-picture" width="150" src="{{ user.images[0].url }}" />
+  </div>
+  <div class="col-md-9">
+    <p class="lead">Welcome, <a href="https://open.spotify.com/user/{{ user.id }}" target="_blank">{{ user.display_name }}!</a></p>
+    <p class="lead">Select a playlist below to get started</p>
+    <p class="blockquote">Tip: If you don't see a playlist listed, make sure it is public</p>
+  </div>
+</div>
+<br>
+<div class="row">
+  <song-downloader></song-downloader>
+</div>

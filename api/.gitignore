@@ -1,0 +1,12 @@
+node_modules/
+dist/
+coverage/
+downloads/
+
+npm-debug*
+
+# Environment-specific configuration - NEVER commit to Git
+config.json
+.vscode/
+
+.DS_Store

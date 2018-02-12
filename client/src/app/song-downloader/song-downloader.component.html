@@ -1,0 +1,28 @@
+<div class="row">
+    <select class="form-control" [(ngModel)]="selectedPlaylist" (ngModelChange)="getPlaylist($event)">
+        <option *ngFor="let playlist of playlists" [ngValue]="playlist.id">{{ playlist.name }}</option>
+    </select>
+</div>
+<br>
+<div *ngIf="tracks.length" class="row text-right">
+    <a class="btn btn-primary" role="button" (click)="downloadAll()">Download All</a>
+</div>
+<br>
+<div *ngFor="let track of tracks">
+    <div class="row">
+        <div class="col-md-4 vertical-center">
+            <a href="{{ track.url }}" target="_blank">{{ track.name }}</a>
+        </div>
+        <div class="col-md-6 vertical-center">
+            <div class="progress">
+                <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" [ngStyle]="{ 'width': track.progress }">{{ track.progress }}</div>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <a *ngIf="track.isDownloading" class="btn btn-danger" role="button" (click)="stopDownload(track.id)">Skip</a>
+            <a *ngIf="!track.isDownloading" class="btn btn-primary" role="button" (click)="this.downloadState.all = false; startDownload(track)">Start</a>
+        </div>
+    </div>
+    <hr>
+</div>
+<a #hiddenDownloadBtn class="hidden" [href]="filePath" download></a>

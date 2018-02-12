@@ -1,0 +1,14 @@
+body {
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+.container {
+    margin-top: 5vh;
+}
+
+@media (min-width: 768px) {
+    .container {
+        max-width: 730px;
+    }
+}
