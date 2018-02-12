@@ -10,13 +10,15 @@ spotify-dl utilizes YouTube for all media. After receiving playlist information 
 
 ## How do I use this?
 
-- Clone this repository.
-
 ### Prerequisites
 
 - To run spotify-dl, you'll need to install Node.js and `youtube-dl`.
   - For more information on installing Node.js, visit [nodejs.org](https://nodejs.org/)
   - For more information on installing `youtube-dl`, visit [the project's page](https://rg3.github.io/youtube-dl/)
+
+### Running the app
+
+- Clone this repository.
 
 ```bash
 git clone https://github.com/elklein96/spotify-dl
