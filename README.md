@@ -20,9 +20,9 @@ spotify-dl utilizes YouTube for all media. After receiving playlist information 
 
 - Clone this repository.
 
-```bash
-git clone https://github.com/elklein96/spotify-dl
-```
+  ```bash
+  git clone https://github.com/elklein96/spotify-dl
+  ```
 
 - Create a copy of [config.example.json](./api/config.example.json) in the same directory named `config.json`.
 
@@ -38,24 +38,24 @@ git clone https://github.com/elklein96/spotify-dl
 
 - Run the proxy server using the provided configuration file.
 
-```bash
-haproxy -- haproxy.cfg
-```
+  ```bash
+  haproxy -- haproxy.cfg
+  ```
 
 - Set up and start the API.
 
-```bash
-cd api
-npm install
-npm start
-```
+  ```bash
+  cd api
+  npm install
+  npm start
+  ```
 
 - Set up and start the Client.
 
-```bash
-cd client
-npm install
-npm start
-```
+  ```bash
+  cd client
+  npm install
+  npm start
+  ```
 
 The application should now be live in your browser at [http://localhost:3000](http://localhost:3000). Have fun!
