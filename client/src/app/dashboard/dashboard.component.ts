@@ -16,10 +16,7 @@ export class DashboardComponent {
 
   constructor(private authService: AuthService) {
     this.user = { display_name: '', email: '', href: '', images: [{}] };
-
-    if (!!this.getAccessToken()) {
-      this.getUserData();
-    }
+    this.getUserData();
   }
 
   getAccessToken() {
