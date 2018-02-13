@@ -14,7 +14,7 @@ export class AuthGuard implements CanActivate {
     private authService: AuthService) { }
 
   canActivate(): Observable<boolean> {
-    return this.http.get(EnvironmentService.USER_URL)
+    return this.http.get(EnvironmentService.USER_URL, { withCredentials: true })
       .map((data: HttpErrorResponse) => {
         if (data.error) {
           this.router.navigate(['/login']);

@@ -20,7 +20,7 @@ export class AuthService {
     }
 
     getUserData() {
-        return this.http.get(EnvironmentService.USER_URL)
+        return this.http.get(EnvironmentService.USER_URL, { withCredentials: true })
             .map((data: User) => {
                 return data;
             })
@@ -38,7 +38,7 @@ export class AuthService {
     }
 
     logOut() {
-        return this.http.delete(EnvironmentService.LOGIN_URL)
+        return this.http.delete(EnvironmentService.LOGIN_URL, { withCredentials: true })
             .map(data => {
                 return data;
             })

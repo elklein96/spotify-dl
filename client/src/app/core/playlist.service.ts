@@ -22,7 +22,7 @@ export class PlaylistService {
             url += id;
         }
 
-        return this.http.get(url, { params })
+        return this.http.get(url, { params, withCredentials: true })
             .map(data => {
                 return data;
             })

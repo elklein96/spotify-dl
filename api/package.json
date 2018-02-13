@@ -1,6 +1,8 @@
 {
-  "name": "reelr",
-  "version": "0.1.0",
+  "name": "spotify-dl-api",
+  "version": "0.0.1",
+  "license": "MIT",
+  "private": true,
   "scripts": {
     "start": "npm run babel && npm run express",
     "babel": "babel ./src -s -D -d ./dist --presets es2015",

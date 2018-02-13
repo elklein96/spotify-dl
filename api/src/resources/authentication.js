@@ -35,6 +35,7 @@ function oAuthCallback(req, res, next) {
 
     if (state === null || state !== storedState) {
         res.status(403).send({ error: 'state_mismatch' });
+        return next();
     } else {
         res.clearCookie(envConfig.auth_state_cookie_name);
         const authOptions = {
@@ -66,6 +67,7 @@ function oAuthCallback(req, res, next) {
             request.get(options, (error, response, body) => {
                 if (error) {
                     res.status(401).send({ error: error });
+                    return next();
                 }
                 res.cookie(envConfig.user_cookie_name, JSON.stringify(body));
                 res.cookie(envConfig.auth_cookie_name, accessToken);
@@ -96,6 +98,7 @@ function getUserData(req, res, next) {
     request.get(options, (error, response, body) => {
         if (error) {
             res.status(401).send({ error: error });
+            return next();
         }
         res.cookie(envConfig.user_cookie_name, JSON.stringify(body));
         res.send(body);

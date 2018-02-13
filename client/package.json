@@ -1,7 +1,8 @@
 {
-  "name": "spotify-dl",
-  "version": "0.0.0",
+  "name": "spotify-dl-client",
+  "version": "0.0.1",
   "license": "MIT",
+  "private": true,
   "scripts": {
     "ng": "ng",
     "dev": "ng serve",
@@ -11,7 +12,6 @@
     "lint": "ng lint",
     "e2e": "ng e2e"
   },
-  "private": true,
   "dependencies": {
     "@angular/animations": "^5.0.0",
     "@angular/common": "^5.0.0",
