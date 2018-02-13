@@ -1,6 +1,6 @@
 {
-    "client_id": "",
-    "client_secret": "",
+    "spotify_client_id": "",
+    "spotify_client_secret": "",
     "redirect_uri": "http://localhost:3000/api/callback",
     "google_api_key": "",
     "base_uri": "http://localhost:3000",

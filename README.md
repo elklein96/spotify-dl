@@ -29,7 +29,7 @@ spotify-dl utilizes YouTube for all media. After receiving playlist information 
 - Create a Spotify application through the [Spotify Developer Dashboard](https://developer.spotify.com).
   - When registering your new application, set the Redirect URI to be `http://<YOUR_PROXY_PORT>/api/callback`.
     - Note: the default proxy port for spotify-dl is `:3000`.
-  - Copy your Spotify application's Client ID, Client Secret, and Redirtect URI into the `client_id`, `client_secret` and `redirect_uri` fields in `config.json`.
+  - Copy your Spotify application's Client ID, Client Secret, and Redirtect URI into the `spotify_client_id`, `spotify_client_secret` and `redirect_uri` fields in `config.json`.
 
 - Create a new Google application through the [Google Developer Console](https://console.developers.google.com).
   - Select `Credentials`.
