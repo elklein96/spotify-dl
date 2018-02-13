@@ -11,9 +11,9 @@ app.server = http.createServer(app);
 app.use(errorHandler.logError);
 app.use(errorHandler.sendError);
 
-app.use(express.static(path.join(__dirname, '/../dist')));
+app.use(express.static(path.join(__dirname, '/../client-dist')));
 app.get('*', (req, res, next) => {
-    res.sendFile(path.join(__dirname, '/../dist/index.html'));
+    res.sendFile(path.join(__dirname, '/../client-dist/index.html'));
 });
 
 app.server.listen(process.env.PORT || 3002);

@@ -1,0 +1,6 @@
+api-dist/
+client-dist/
+static/
+config.json
+
+node_modules/
