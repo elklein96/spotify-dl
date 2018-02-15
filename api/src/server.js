@@ -1,12 +1,15 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
+const fixPath = require('fix-path');
 const http = require('http');
 const path = require('path');
 
 const errorHandler = require('./core/error-handler');
 const auth = require('./resources/authentication');
 const playlists = require('./resources/playlists');
+
+fixPath();
 
 const app = express();
 

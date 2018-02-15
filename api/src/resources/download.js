@@ -1,4 +1,5 @@
-var spawn = require('child_process').spawn;
+const spawn = require('child_process').spawn;
+const path = require('path');
 const WebSocket = require('ws');
 
 const wss = new WebSocket.Server({ port: 3003 });
@@ -29,7 +30,7 @@ function startDownload(ws, context) {
     workerThread = spawn('youtube-dl', [
         '--extract-audio',
         '--audio-format', 'mp3',
-        '-o', './downloads/%(title)s.%(ext)s',
+        '-o', path.join(__dirname, '../../../downloads/%(title)s.%(ext)s'),
         '--restrict-filenames', context.url
     ]);
 
