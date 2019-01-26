@@ -11,20 +11,20 @@
     "test": "npm run babel && mocha --compilers js:babel-core/register \"./dist/**/*spec.js\""
   },
   "dependencies": {
-    "body-parser": "~1.13.3",
-    "cookie-parser": "^1.4.3",
-    "express": "~4.13.3",
+    "body-parser": "~1.18.3",
+    "cookie-parser": "~1.4.3",
+    "express": "~4.16.4",
     "querystring": "^0.2.0",
-    "request": "~2.81.0",
-    "ws": "^4.0.0"
+    "request": "~2.88.0",
+    "ws": "~6.1.3"
   },
   "devDependencies": {
-    "babel-cli": "~6.9.0",
-    "babel-core": "~6.9.0",
+    "babel-cli": "~6.26.0",
+    "babel-core": "^6.26.3",
     "babel-preset-es2015": "~6.9.0",
     "chai": "~3.5.0",
     "eslint": "~3.19.0",
-    "mocha": "~3.3.0",
+    "mocha": "~5.2.0",
     "mockery": "~2.0.0",
     "sinon": "~2.2.0",
     "sinon-chai": "~2.10.0"

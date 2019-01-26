@@ -47,7 +47,7 @@ function oAuthCallback(req, res, next) {
             },
             headers: {
                 'Authorization': 'Basic ' +
-                    new Buffer(envConfig.spotify_client_id + ':' + envConfig.spotify_client_secret).toString('base64')
+                    Buffer.from(envConfig.spotify_client_id + ':' + envConfig.spotify_client_secret).toString('base64')
             },
             json: true
         };

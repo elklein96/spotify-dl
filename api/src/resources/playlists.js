@@ -85,12 +85,12 @@ function searchForSong(name, artist) {
         key: envConfig.google_api_key
     };
     const queryParams = querystring.stringify(reqOptions);
-    const authOptions = {
+    const songOptions = {
         url: 'https://www.googleapis.com/youtube/v3/search?' + queryParams,
         json: true
     };
     return new Promise((resolve, reject) => {
-        request.get(authOptions, (error, response, body) => {
+        request.get(songOptions, (error, response, body) => {
             if (error) {
                 reject(error);
             }
