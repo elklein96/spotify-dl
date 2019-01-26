@@ -87,7 +87,7 @@ export class SongDownloaderComponent implements OnInit, OnDestroy {
       });
   }
 
-  private getPlaylist(id) {
+  getPlaylist(id) {
     this.playlistService.getPlaylists(id).subscribe(
       result => {
         this.tracks = result.data;
@@ -97,7 +97,7 @@ export class SongDownloaderComponent implements OnInit, OnDestroy {
       });
   }
 
-  private downloadAll() {
+  downloadAll() {
     this.downloadState.all = true;
     this.downloadState.currentTrack = 0;
     this.startDownload(this.tracks[0]);
@@ -114,7 +114,7 @@ export class SongDownloaderComponent implements OnInit, OnDestroy {
     this.tracks[trackIndex].isDownloading = true;
   }
 
-  private stopDownload(id) {
+  stopDownload(id) {
     const message = {
       command: 'stop',
       context: { id }

@@ -1,4 +1,4 @@
-export class Playlist {
+export interface Playlist {
     id: string;
     name: string;
     link: string;

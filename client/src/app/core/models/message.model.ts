@@ -1,4 +1,4 @@
-export class Message {
+export interface Message {
     command: string;
     context: any;
 }

@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import 'rxjs/add/operator/mergeMap';
 
 import { AuthService } from '../core/auth.service';
 
@@ -15,7 +14,7 @@ export class DashboardComponent {
   user: User;
 
   constructor(private authService: AuthService) {
-    this.user = { display_name: '', email: '', href: '', images: [{}] };
+    this.user = { display_name: '', email: '', href: '', images: [{ url: '' }], id: '' };
     this.getUserData();
   }
 
